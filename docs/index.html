@@ -132,8 +132,6 @@
     sampleRate = audioContext.sampleRate;
     console.log("sample rate:" + sampleRate);
 
-    recorder = new Recorder(filter, {workerPath: 'js/recorderjs/recorderWorker.js'});
-
     filter = audioContext.createBiquadFilter();
     filter.type = 0;
     filter.frequency.value = 20000;
@@ -144,7 +142,9 @@
     analyser = audioContext.createAnalyser();
     analyser.fftSize = bufsize;
     analyser.smoothingTimeContant = 0.9;
-    
+
+    recorder = new Recorder(filter, {workerPath: 'js/recorderjs/recorderWorker.js'});
+
     setInterval(DrawGraph, 1000 / 60);
 
     navigator.getUserMedia({video: false, audio: true}, function (stream) {
