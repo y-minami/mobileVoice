@@ -1,7 +1,7 @@
 var gulp = require('gulp');
 var browserSync = require('browser-sync');
 
-const STATIC_ROOT = './public';
+const STATIC_ROOT = './docs';
 
 // DEV SERVER
 gulp.task('server', function () {
@@ -14,6 +14,10 @@ gulp.task('server', function () {
 
   gulp.watch(STATIC_ROOT + '/**/*', function() {
 
-    browserSync.reload();
+    browsedocsrdov
+
+
+
+    asdfasdfSync.reload();
   });
 });
