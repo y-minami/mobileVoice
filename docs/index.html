@@ -132,6 +132,8 @@
     sampleRate = audioContext.sampleRate;
     console.log("sample rate:" + sampleRate);
 
+    recorder = new Recorder(filter, {workerPath: 'js/recorderjs/recorderWorker.js'});
+
     filter = audioContext.createBiquadFilter();
     filter.type = 0;
     filter.frequency.value = 20000;
@@ -155,16 +157,16 @@
 
       analyser.connect(audioContext.destination);
 
-//      recorder = new Recorder(filter, {workerPath: 'js/recorderjs/recorderWorker.js'});
-//      recorder && recorder.record();
+      recorder && recorder.record();
 
-      setInterval(DrawGraph, 1000 / 60);
 
     }, function (e) {
       console.log("No live audio input in this browser: " + e);
     });
 
   }
+
+  setInterval(DrawGraph, 1000 / 60);
 
   function DrawGraph() {
 
