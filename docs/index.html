@@ -152,6 +152,7 @@
 
       analyser.connect(audioContext.destination);
 
+      recorder = new Recorder(filter, {workerPath: 'js/recorderjs/recorderWorker.js'});
       recorder && recorder.record();
 
       setInterval(DrawGraph, 1000 / 60);
@@ -160,7 +161,6 @@
       console.log("No live audio input in this browser: " + e);
     });
 
-    recorder = new Recorder(filter, {workerPath: 'js/recorderjs/recorderWorker.js'});
   }
 
   function DrawGraph() {
