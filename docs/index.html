@@ -57,11 +57,6 @@
 </p>
 
 <script>
-  window.AudioContext = window.AudioContext || window.webkitAudioContext;
-  audioContext = new AudioContext();
-  sampleRate = audioContext.sampleRate;
-  console.log("sample rate:" + sampleRate);
-
   function Setup() {
     filter.type = ["lowpass", "highpass", "bandpass", "lowshelf", "highshelf", "peaking", "notch", "allpass"][document.getElementById("type").selectedIndex];
     filter.type = document.getElementById("type").selectedIndex;
@@ -71,19 +66,24 @@
   }
 
 
-  filter = audioContext.createBiquadFilter();
-  filter.type = 0;
-  filter.frequency.value = 20000;
-
-  bufsize = 1024;
-  data = new Float32Array(bufsize);
-
-  analyser = audioContext.createAnalyser();
-  analyser.fftSize = bufsize;
-  analyser.smoothingTimeContant = 0.9;
-  //analyser.getByteTimeDomainData(data);
 
   function start() {
+    
+    window.AudioContext = window.AudioContext || window.webkitAudioContext;
+    audioContext = new AudioContext();
+    sampleRate = audioContext.sampleRate;
+    console.log("sample rate:" + sampleRate);
+
+    filter = audioContext.createBiquadFilter();
+    filter.type = 0;
+    filter.frequency.value = 20000;
+
+    bufsize = 1024;
+    data = new Float32Array(bufsize);
+
+    analyser = audioContext.createAnalyser();
+    analyser.fftSize = bufsize;
+    analyser.smoothingTimeContant = 0.9;
 
     navigator.getUserMedia({video: false, audio: true}, function (stream) {
       var input = audioContext.createMediaStreamSource(stream);
