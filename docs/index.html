@@ -70,6 +70,7 @@
   }
 
   function wavExported(blob) {
+    console.log(blob)
     var url = URL.createObjectURL(blob);
     var date = new Date();
     var fname = date.toISOString() + '.wav';
