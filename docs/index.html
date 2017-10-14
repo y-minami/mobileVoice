@@ -92,8 +92,8 @@
 
     analyser.connect(audioContext.destination);
 
-  }, function () {
-
+  }, function (e) {
+    console.log("No live audio input in this browser: " + e);
   });
 
 
