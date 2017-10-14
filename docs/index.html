@@ -144,6 +144,8 @@
     analyser = audioContext.createAnalyser();
     analyser.fftSize = bufsize;
     analyser.smoothingTimeContant = 0.9;
+    
+    setInterval(DrawGraph, 1000 / 60);
 
     navigator.getUserMedia({video: false, audio: true}, function (stream) {
 
@@ -166,7 +168,6 @@
 
   }
 
-  setInterval(DrawGraph, 1000 / 60);
 
   function DrawGraph() {
 
