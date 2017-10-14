@@ -14,10 +14,6 @@ gulp.task('server', function () {
 
   gulp.watch(STATIC_ROOT + '/**/*', function() {
 
-    browsedocsrdov
-
-
-
-    asdfasdfSync.reload();
+    browserSync.reload();
   });
 });
