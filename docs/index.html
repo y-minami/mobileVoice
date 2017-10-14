@@ -14,7 +14,7 @@
 </p>
 <![endif]-->
 
-<div id="root"></div>
+<button onclick="start()"></button>
 <table>
   <tr>
     <td>Type :</td>
@@ -83,19 +83,21 @@
   analyser.smoothingTimeContant = 0.9;
   //analyser.getByteTimeDomainData(data);
 
-  navigator.getUserMedia({video: false, audio: true}, function (stream) {
-    var input = audioContext.createMediaStreamSource(stream);
+  function start() {
 
-    //input.connect(analyser);
-    input.connect(filter);
-    filter.connect(analyser);
+    navigator.getUserMedia({video: false, audio: true}, function (stream) {
+      var input = audioContext.createMediaStreamSource(stream);
 
-    analyser.connect(audioContext.destination);
+      //input.connect(analyser);
+      input.connect(filter);
+      filter.connect(analyser);
 
-  }, function (e) {
-    console.log("No live audio input in this browser: " + e);
-  });
+      analyser.connect(audioContext.destination);
 
+    }, function (e) {
+      console.log("No live audio input in this browser: " + e);
+    });
+  }
 
   setInterval(DrawGraph, 1000 / 60);
 
