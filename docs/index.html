@@ -70,13 +70,32 @@
   }
 
   function wavExported(blob) {
-    console.log(blob)
-    var url = URL.createObjectURL(blob);
+    console.log(blob);
+
     var date = new Date();
     var fname = date.toISOString() + '.wav';
-
     var timeline = document.querySelector('#timeline');
+
+    var reader = new FileReader();
+    var out = new Blob([blob], {type: 'audio/wav'});
+    reader.onload = function (e) {
+      var url = reader.result;
+
       timeline.innerHTML = '<li>' +
+        fname + // date.toLocaleTimeString() +
+        ' <a onclick="wavPlay(\'' + url + '\');"><span class="glyphicon glyphicon-play">PLAY</span></a>' +
+        ' <a href="' + url + '" download="' + fname + '"><span class="glyphicon glyphicon-save">DOWNLOAD</span></a>' +
+        '</li>';
+
+      recorder.clear();
+    };
+    reader.readAsDataURL(out);
+
+    return;
+
+    var url = URL.createObjectURL(blob);
+
+    timeline.innerHTML = '<li>' +
       fname + // date.toLocaleTimeString() +
       ' <a onclick="wavPlay(\'' + url + '\');"><span class="glyphicon glyphicon-play">PLAY</span></a>' +
       ' <a href="' + url + '" download="' + fname + '"><span class="glyphicon glyphicon-save">DOWNLOAD</span></a>' +
