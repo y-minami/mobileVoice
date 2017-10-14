@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://webrtcexperiment-webrtc.netdna-ssl.com/RecordRTC.js"></script>
+<script src="https://cdn.webrtc-experiment.com/gumadapter.js"></script>
+</head>
+
+<body>
+<audio id="toto" controls></audio>
+<div id="result" style="max-width:500px;     word-wrap: break-word; "></div>
+<button onclick="record()">RECORD</button>
+<script>
+
+var audioStream;
+
+function record() {
+    // RecordRTC usage goes here
+
+	var recordRTC = RecordRTC(audioStream, {recorderType: StereoAudioRecorder});
+	recordRTC.startRecording();
+
+	setTimeout(
+		function() {recordRTC.stopRecording(function(audioURL) {
+			var recordedBlob = recordRTC.getBlob();
+			recordRTC.getDataURL(function(dataURL) {
+			    var audio = document.querySelector('audio');
+                audio.src = dataURL;
+			    document.getElementById("result").innerHTML = dataURL;
+			});
+		});}, 1000);
+}
+
+function errorCallback(error) {
+  console.log(error)
+    // maybe another application is using the device
+}
+
+
+navigator.mediaDevices.getUserMedia({ audio: true }).then(
+	function success(audioStreamCaptured) {
+		audioStream = audioStreamCaptured;
+	}
+).catch(errorCallback);
+
+
+</script>
+</body>
+</html>
