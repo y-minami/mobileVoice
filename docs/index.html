@@ -6,6 +6,7 @@
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width">
   <link rel="icon" type="image/png" href="http://fountainjs.io/assets/imgs/fountain.png" />
+  <script src="./recorder.js"></script>
 </head>
 <body>
 <!--[if lt IE 10]>
@@ -14,7 +15,8 @@
 </p>
 <![endif]-->
 
-<button onclick="start()"></button>
+<button onclick="start()">スタート</button>
+<button onclick="stop()">ストップ</button>
 <table>
   <tr>
     <td>Type :</td>
@@ -56,6 +58,8 @@
   <canvas id="cvs" width=512 height=256></canvas>
 </p>
 
+<div id="timeline"></div>
+
 <script>
   function Setup() {
     filter.type = ["lowpass", "highpass", "bandpass", "lowshelf", "highshelf", "peaking", "notch", "allpass"][document.getElementById("type").selectedIndex];
@@ -65,7 +69,41 @@
     filter.gain.value = document.getElementById("gainlabel").innerHTML = parseFloat(document.getElementById("gain").value);
   }
 
+  function wavExported(blob) {
+    var url = URL.createObjectURL(blob);
+    var date = new Date();
+    var fname = date.toISOString() + '.wav';
 
+    var timeline = document.querySelector('#timeline');
+      timeline.innerHTML = '<li>' +
+      fname + // date.toLocaleTimeString() +
+      ' <a onclick="wavPlay(\'' + url + '\');"><span class="glyphicon glyphicon-play">PLAY</span></a>' +
+      ' <a href="' + url + '" download="' + fname + '"><span class="glyphicon glyphicon-save">DOWNLOAD</span></a>' +
+      '</li>';
+
+    recorder.clear();
+  }
+
+  var wavPlay = function (url) {
+    var request = new XMLHttpRequest();
+    request.open('GET', url, true);
+    request.responseType = 'arraybuffer';
+
+    request.onload = function () {
+      audioContext.decodeAudioData(request.response, function (buffer) {
+        var source = audioContext.createBufferSource();
+        source.buffer = buffer;
+        source.connect(audioContext.destination);
+        source.start(0);
+      });
+    }
+    request.send();
+  };
+
+  function stop() {
+    recorder && recorder.stop();
+    recorder && recorder.exportWAV(wavExported);
+  }
 
   function start() {
 
@@ -94,12 +132,16 @@
 
       analyser.connect(audioContext.destination);
 
+      recorder && recorder.record();
+
+      setInterval(DrawGraph, 1000 / 60);
+
     }, function (e) {
       console.log("No live audio input in this browser: " + e);
     });
-  }
 
-  setInterval(DrawGraph, 1000 / 60);
+    recorder = new Recorder(filter, {workerPath: 'js/recorderjs/recorderWorker.js'});
+  }
 
   function DrawGraph() {
 
