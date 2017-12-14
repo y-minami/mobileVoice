@@ -63,7 +63,7 @@
 <script>
   function Setup() {
     filter.type = ["lowpass", "highpass", "bandpass", "lowshelf", "highshelf", "peaking", "notch", "allpass"][document.getElementById("type").selectedIndex];
-    filter.type = document.getElementById("type").selectedIndex;
+    //filter.type = document.getElementById("type").selectedIndex;
     filter.frequency.value = document.getElementById("freqlabel").innerHTML = parseFloat(document.getElementById("freq").value);
     filter.Q.value = document.getElementById("qlabel").innerHTML = parseFloat(document.getElementById("q").value);
     filter.gain.value = document.getElementById("gainlabel").innerHTML = parseFloat(document.getElementById("gain").value);
